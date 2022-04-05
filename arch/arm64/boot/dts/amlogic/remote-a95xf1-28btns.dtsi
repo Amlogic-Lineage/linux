@@ -1,0 +1,72 @@
+/* A95X F1 remote (28 keys)*/
+
+/*
+ scan table: 
+ 0xe31cdf00
+ 
+ 0xb44bdf00  0xfe01df00  0xa25ddf00
+ 0xb04fdf00  0xa05fdf00  0xa35cdf00
+ 
+ 0xbd42df00              0xf50adf00
+ 
+             0xe51adf00
+ 0xb847df00  0xf906df00  0xf807df00
+             0xb748df00
+ 
+ 0xfc03df00              0xe718df00
+ 
+ 0xab54df00  0xe916df00  0xea15df00
+ 0xaf50df00  0xed12df00  0xee11df00
+ 0xb34cdf00  0xf10edf00  0xf20ddf00
+ 0xbe41df00  0xf30cdf00  0xef10df00
+ 
+*/
+
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/input/meson_rc.h>
+
+&custom_maps {
+		mapnum = <1>;
+		map0 = <&map_0>;
+		map_0: map_0{
+				mapname = "a95f1-ir";
+				customcode = <0xdf00>;
+				release_delay = <80>;
+				fn_key_scancode = <0x03>;
+				cursor_left_scancode = <0x47>;
+				cursor_right_scancode = <0x07>;
+				cursor_up_scancode = <0x1a>;
+				cursor_down_scancode = <0x48>;
+				cursor_ok_scancode = <0x06>;
+				size  = <28>;   /*keymap size*/
+				keymap = <REMOTE_KEY(0x1c, KEY_POWER)
+						REMOTE_KEY(0x42,KEY_HOME)
+						REMOTE_KEY(0x01,KEY_CALC)
+						REMOTE_KEY(0x0a,KEY_BACK)
+						REMOTE_KEY(0x18,KEY_MENU)
+						REMOTE_KEY(0x06,KEY_RIGHTCTRL)
+						REMOTE_KEY(0x1a,KEY_UP)
+						REMOTE_KEY(0x47,KEY_LEFT)
+						REMOTE_KEY(0x07,KEY_RIGHT)
+						REMOTE_KEY(0x48,KEY_DOWN)
+						REMOTE_KEY(0x5d,KEY_VOLUMEUP)
+						REMOTE_KEY(0x5c,KEY_VOLUMEDOWN)
+						REMOTE_KEY(0x41,290)
+						REMOTE_KEY(0x4b,KEY_SCROLLUP)
+						REMOTE_KEY(0x4f,KEY_SCROLLDOWN)
+						REMOTE_KEY(0x0c,KEY_0)
+						REMOTE_KEY(0x54,KEY_1)
+						REMOTE_KEY(0x16,KEY_2)
+						REMOTE_KEY(0x15,KEY_3)
+						REMOTE_KEY(0x50,KEY_4)
+						REMOTE_KEY(0x12,KEY_5)
+						REMOTE_KEY(0x11,KEY_6)
+						REMOTE_KEY(0x4c,KEY_7)
+						REMOTE_KEY(0x0e,KEY_8)
+						REMOTE_KEY(0x0d,KEY_9)
+						REMOTE_KEY(0x10,KEY_BACKSPACE)
+						REMOTE_KEY(0x58,288)
+						REMOTE_KEY(0x03,KEY_F5)>;
+		};
+};
+
