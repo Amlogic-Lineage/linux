@@ -2541,6 +2541,15 @@ static bool hdmitx_limited_1080p(void)
 		return 0;
 }
 
+static bool hdmitx_limited_4k30(void)
+{
+	if (is_meson_gxl_package_905W())
+		return 1;
+	else
+		return 0;
+}
+
+
 static bool hdmitx_limited_hdcp14(void)
 {
 	return hdmitx_limited_1080p();
@@ -2563,6 +2572,8 @@ static ssize_t show_disp_cap(struct device *dev,
 			memset(mode_tmp, 0, sizeof(mode_tmp));
 			strncpy(mode_tmp, disp_mode_t[i], 31);
 			if (hdmitx_limited_1080p() && is_4k_fmt(mode_tmp))
+				continue;
+			if (hdmitx_limited_4k30() && is_4k50_fmt(mode_tmp))
 				continue;
 			vic = hdmitx_edid_get_VIC(&hdmitx_device, mode_tmp, 0);
 			/* Handling only 4k420 mode */

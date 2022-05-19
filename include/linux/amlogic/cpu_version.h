@@ -127,6 +127,11 @@ static inline bool is_meson_gxl_package_905L(void)
 	return is_meson_gxl_cpu() && package_id_is(0xc0);
 }
 
+static inline bool is_meson_gxl_package_905W(void)
+{
+	return is_meson_gxl_cpu() && package_id_is(0xa0);
+}
+
 static inline bool is_meson_gxl_package_905M2(void)
 {
 	return is_meson_gxl_cpu() && package_id_is(0xe0);
