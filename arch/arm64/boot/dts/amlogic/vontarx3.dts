@@ -18,8 +18,9 @@
 /dts-v1/;
 
 #include "mesonsm1.dtsi"
-#include "partition_mbox_normal.dtsi"
-#include "mesonsm1_skt-panel.dtsi"
+#include "partition_mbox_normal_P_64.dtsi"
+#include "remote-vontarx3-12btns.dtsi"
+
 
 / {
 	model = "Amlogic";
@@ -169,26 +170,7 @@
 
 	gpioleds {
 		compatible = "gpio-leds";
-		status = "disabled";
-
-		net_red {
-			label="net_red";
-			/*gpios=<&gpio GPIOA_14 GPIO_ACTIVE_LOW>;*/
-			default-state ="on";
-		};
-
-		net_green {
-			label="net_green";
-			/*gpios=<&gpio GPIOA_15 GPIO_ACTIVE_HIGH>;*/
-			default-state ="on";
-		};
-
-		remote_led {
-			label = "remote_led";
-			gpios = <&gpio_ao GPIOAO_10 GPIO_ACTIVE_LOW>;
-			default-state = "off";
-			linux,default-trigger = "rc_feedback";
-		};
+		status = "okay";
 
 		sys_led {
 			label="sys_led";
@@ -325,43 +307,6 @@
 		nrds-enable = <1>;
 		pps-enable = <1>;
 	};
-	dvb {
-		compatible = "amlogic, dvb";
-		dev_name = "dvb";
-		fe0_mode = "external";
-		fe0_demod = "Avl6762";
-		fe0_i2c_adap_id = <&i2c3>;
-		fe0_demod_i2c_addr = <0x14>;
-		fe0_ts = <0>;
-		fe0_reset_value = <0>;
-		fe0_reset_gpio = <&gpio GPIOZ_10 GPIO_ACTIVE_HIGH>;
-		fe0_ant_poweron_value = <0>;
-		fe0_ant_power_gpio = <&gpio GPIOH_5 GPIO_ACTIVE_HIGH>;
-
-		ts0 = "serial";
-		ts0_control = <0x800>;
-		ts0_invert = <0>;
-		interrupts = <0 23 1
-		0 5 1
-		0 53 1
-		0 19 1
-		0 25 1
-		0 18 1
-		0 24 1>;
-		interrupt-names = "demux0_irq",
-		"demux1_irq",
-		"demux2_irq",
-		"dvr0_irq",
-		"dvr1_irq",
-		"dvrfill0_fill",
-		"dvrfill1_flush";
-		pinctrl-names = "s_ts0";
-		pinctrl-0 = <&dvb_s_ts0_pins>;
-		clocks = <&clkc CLKID_DEMUX
-		&clkc CLKID_AHB_ARB0
-		&clkc CLKID_DOS_PARSER>;
-		clock-names = "demux", "ahbarb0", "parser_top";
-	};
 
 	ionvideo {
 		compatible = "amlogic, ionvideo";
@@ -385,70 +330,10 @@
 		cma_mode = <1>;
 	};
 
-	vm0 {
-		compatible = "amlogic, vm";
-		memory-region = <&vm0_cma_reserved>;
-		dev_name = "vm0";
-		status = "disabled";
-		vm_id = <0>;
-	};
-
-	amvdec_656in {
-		/*bt656 gpio conflict with i2c0*/
-		compatible = "amlogic, amvdec_656in";
-		dev_name = "amvdec_656in";
-		status = "disabled";
-		reg = <0x0 0xffe02000 0x0 0x7c>;
-		clocks = <&clkc CLKID_BT656_COMP>,
-		      <&clkc CLKID_BT656>;
-		clock-names = "cts_bt656_clk1",
-		      "clk_gate_bt656";
-		/* bt656in1, bt656in2 */
-		bt656in1 {
-		bt656_id = <1>;
-		status = "disabled";
-		};
-	};
-
-	aml_cams {
-		compatible = "amlogic, cams_prober";
-		status = "disabled";
-		pinctrl-names="default";
-		pinctrl-0=<&cam_dvp_pins &gen_clk_ee_z>;
-		clocks = <&clkc CLKID_GEN_CLK>;
-		clock-names = "g12a_24m";
-		cam_0{
-			cam_name = "gc2145";
-			front_back = <0>;
-			/*u200 i2c2 gpio conflict with ethmac*/
-			camera-i2c-bus = <&i2c2>;
-			gpio_pwdn-gpios = <&gpio GPIOZ_2 GPIO_ACTIVE_HIGH>;
-			gpio_rst-gpios = <&gpio GPIOZ_12 GPIO_ACTIVE_HIGH>;
-			mirror_flip = <1>;
-			vertical_flip = <1>;
-			spread_spectrum = <0>;
-			bt_path = "gpio";
-			bt_path_count = <1>;
-			vdin_path = <0>;
-			status = "okay";
-		};
-	};
-
-	gpio_keypad{
-		compatible = "amlogic, gpio_keypad";
-		status = "okay";
-		scan_period = <20>;
-		key_num = <1>;
-		key_name = "power";
-		key_code = <116>;
-		key-gpios = <&gpio_ao  GPIOAO_3  GPIO_ACTIVE_HIGH>;
-		detect_mode = <0>;/*0:polling mode, 1:irq mode*/
-	};
-
 	unifykey{
 		compatible = "amlogic, unifykey";
 		status = "ok";
-		unifykey-num = <18>;
+		unifykey-num = <17>;
 		unifykey-index-0 = <&keysn_0>;
 		unifykey-index-1 = <&keysn_1>;
 		unifykey-index-2 = <&keysn_2>;
@@ -466,7 +351,6 @@
 		unifykey-index-14= <&keysn_14>;
 		unifykey-index-15= <&keysn_15>;
 		unifykey-index-16= <&keysn_16>;
-		unifykey-index-17= <&keysn_17>;
 
 		keysn_0: key_0{
 			key-name = "usid";
@@ -547,16 +431,11 @@
 			key-permit = "read","write","del";
 		};
 		keysn_15:key_15{
-			key-name = "region_code";
-			key-device = "normal";
-			key-permit = "read","write","del";
-		};
-		keysn_16:key_16{
 			key-name = "netflix_mgkid";
 			key-device = "secure";
 			key-permit = "read","write","del";
 		};
-		keysn_17:key_17{
+		keysn_16:key_16{
 			key-name = "attestationdevidbox";// attest dev id box
 			key-device = "secure";
 			key-permit = "read","write","del";
@@ -950,7 +829,7 @@
 };
 
 &i2c0 {
-	status = "okay";
+	status = "disabled";
 	pinctrl-names="default";
 	pinctrl-0=<&i2c0_master_pins2>;
 	clock-frequency = <400000>;
@@ -984,7 +863,7 @@
  */
 
 &i2c3 {
-	status = "ok";
+	status = "disabled";
 	pinctrl-names="default";
 	pinctrl-0=<&i2c3_master_pins2>;
 	clock-frequency = <300000>; /* default 100k */
@@ -1198,7 +1077,7 @@
 		 *	LOOPBACK, 7
 		 */
 		resample_module = <4>;
-		status = "disabled";
+		status = "okay";
 	};
 
 	vad:vad {
@@ -1426,7 +1305,8 @@
 	tdmout_c:tdmout_c {
 		mux { /* GPIOA_12, GPIOA_13 */
 			groups = "tdmc_sclk_a",
-				"tdmc_fs_a"
+				"tdmc_fs_a",
+				"tdmc_dout0_a"
 				/*, "tdmc_dout0_a"
 				 *,	"tdmc_dout2"
 				 *, "tdmc_dout3"
@@ -1544,11 +1424,12 @@
 };
 &ethmac {
 	status = "okay";
-	pinctrl-names = "internal_eth_pins";
-	pinctrl-0 = <&internal_eth_pins>;
-	mc_val = <0x4be04>;
-
-	internal_phy=<1>;
+	pinctrl-names = "external_eth_pins";
+	pinctrl-0 = <&external_eth_pins>;
+	mc_val = <0x1621>;
+	mc_val_external_phy = <0x1621>;
+	mc_val_internal_phy = <0x1800>;
+	internal_phy=<0>;
 };
 
 &uart_A {
@@ -1558,7 +1439,7 @@
 /*if you want to use vdin just modify status to "ok"*/
 &vdin0 {
 	memory-region = <&vdin0_cma_reserved>;
-	status = "okay";
+	status = "disabled";
 	/*vdin write mem color depth support:
 	 *bit0:support 8bit
 	 *bit1:support 9bit
@@ -1570,7 +1451,7 @@
 };
 &vdin1 {
 	memory-region = <&vdin1_cma_reserved>;
-	status = "okay";
+	status = "disabled";
 	/*vdin write mem color depth support:
 	 *bit0:support 8bit
 	 *bit1:support 9bit
@@ -1593,9 +1474,8 @@
 			 "MMC_CAP_ERASE",
 			 "MMC_CAP_CMD23",
 			 "MMC_CAP_DRIVER_TYPE_D";
-		caps2 = "MMC_CAP2_HS200", "MMC_CAP2_HS400";
 		f_min = <400000>;
-		f_max = <200000000>;
+		f_max = <170000000>;
 	};
 };
 
@@ -1625,7 +1505,7 @@
 			 "MMC_PM_KEEP_POWER",
 			 "MMC_CAP_SDIO_IRQ";
 		f_min = <400000>;
-		f_max = <200000000>;
+		f_max = <170000000>;
 	};
 };
 
