@@ -18,7 +18,7 @@
 /dts-v1/;
 
 #include "mesong12a.dtsi"
-#include "partition_mbox_normal.dtsi"
+#include "partition_mbox_normal_P_64.dtsi"
 
 / {
 	model = "Amlogic";
@@ -188,7 +188,7 @@
 	bt-dev{
 		compatible = "amlogic, bt-dev";
 		dev_name = "bt-dev";
-		status = "disable";
+		status = "okay";
 		gpio_reset = <&gpio       GPIOX_17       GPIO_ACTIVE_HIGH>;
 		gpio_hostwake = <&gpio       GPIOX_19       GPIO_ACTIVE_HIGH>;
 	};
@@ -196,7 +196,7 @@
 	wifi{
 		compatible = "amlogic, aml_wifi";
 		dev_name = "aml_wifi";
-		status = "disable";
+		status = "okay";
 		interrupt_pin = <&gpio       GPIOX_7       GPIO_ACTIVE_HIGH>;
 		irq_trigger_type = "GPIO_IRQ_LOW";
 		power_on_pin = <&gpio       GPIOX_6       GPIO_ACTIVE_HIGH>;
@@ -1217,7 +1217,7 @@
 	controller-type = <3>;
 };
 &ethmac {
-	status = "okay";
+	status = "disabled";
 	pinctrl-names = "external_eth_pins";
 	pinctrl-0 = <&external_eth_pins>;
 	mc_val = <0x1621>;
